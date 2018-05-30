@@ -4,7 +4,7 @@ import gzip
 from collections import defaultdict
 from keras.utils.np_utils import to_categorical
 import matplotlib.pyplot as plt
-from keras.layers import Dense, LSTM, Embedding
+from keras.layers import Dense, LSTM, Embedding, Bidirectional
 from keras.models import Sequential
 from keras.preprocessing.text import Tokenizer,text_to_word_sequence
 
@@ -121,8 +121,8 @@ def get_embedding_matrix_for_model(embeddings,word_index):
 def build_model(embedding_matrix,categories):
     model = Sequential()
     model.add(Embedding(embedding_matrix.shape[0], embedding_size, weights=[embedding_matrix],input_length=maxlen,trainable=False))
-    model.add(LSTM(64,return_sequences=True))
-    model.add(LSTM(64))
+    model.add(Bidirectional(LSTM(64,return_sequences=True)))
+    model.add(Bidirectional(LSTM(64)))
 #   We don't lose much by replacing LSTM with this flatten layer (as we have short sequences)
 #   model.add(Flatten())
     model.add(Dense(64, activation='relu'))
